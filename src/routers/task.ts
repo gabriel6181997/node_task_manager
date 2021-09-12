@@ -1,9 +1,9 @@
-const express = require("express");
-const Task = require("../models/task");
-const auth = require("../middleware/auth");
-const router = new express.Router();
+import express, { Request, Response } from "express";
+import { Task } from "../models/task";
+import { auth } from "../middleware/auth";
+const router = express.Router();
 
-router.post("/tasks", auth, async (req, res) => {
+router.post("/tasks", auth, async (req: Request, res: Response) => {
   const task = new Task({
     ...req.body,
     owner: req.user._id,
@@ -17,7 +17,7 @@ router.post("/tasks", auth, async (req, res) => {
   }
 });
 
-router.get("/tasks", auth, async (req, res) => {
+router.get("/tasks", auth, async (req: Request, res: Response) => {
   const match = {};
   const sort = {};
 
@@ -46,7 +46,7 @@ router.get("/tasks", auth, async (req, res) => {
   }
 });
 
-router.get("/tasks/:id", auth, async (req, res) => {
+router.get("/tasks/:id", auth, async (req: Request, res: Response) => {
   const _id = req.params.id;
 
   try {
@@ -62,7 +62,7 @@ router.get("/tasks/:id", auth, async (req, res) => {
   }
 });
 
-router.patch("/tasks/:id", auth, async (req, res) => {
+router.patch("/tasks/:id", auth, async (req: Request, res: Response) => {
   const updates = Object.keys(req.body);
   const allowUpdates = ["description", "completed"];
   const isValidOperation = updates.every((update) =>
@@ -91,7 +91,7 @@ router.patch("/tasks/:id", auth, async (req, res) => {
   }
 });
 
-router.delete("/tasks/:id", auth, async (req, res) => {
+router.delete("/tasks/:id", auth, async (req: Request, res: Response) => {
   try {
     const task = await Task.findOneAndDelete({
       _id: req.params.id,
@@ -108,4 +108,4 @@ router.delete("/tasks/:id", auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export const taskRouter = router;
