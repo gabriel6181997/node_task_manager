@@ -18,11 +18,11 @@ router.post("/tasks", auth, async (req: Request, res: Response) => {
 });
 
 router.get("/tasks", auth, async (req: Request, res: Response) => {
-  const match = {};
-  const sort = {};
+  const match: {[key: string]: boolean} = {};
+  const sort: {[key: string]: number} = {};
 
   if (req.query.sortBy) {
-    const parts = req.query.sortBy.split(":");
+    const parts = (req.query.sortBy as string).split(":");
     sort[parts[0]] = parts[1] === "desc" ? -1 : 1;
   }
 
@@ -35,12 +35,12 @@ router.get("/tasks", auth, async (req: Request, res: Response) => {
       path: "tasks",
       match,
       options: {
-        limit: parseInt(req.query.limit),
-        skip: parseInt(req.query.skip),
+        limit: parseInt(req.query.limit as string),
+        skip: parseInt(req.query.skip as string),
         sort,
       },
     });
-    res.send(req.user.tasks);
+    res.send(req.user.task);
   } catch (error) {
     res.status(500).send();
   }

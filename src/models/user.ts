@@ -1,11 +1,11 @@
-import { UserModel } from "@src/type/type";
 import mongoose, { Model } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Task } from "./task";
+import { UserDocument, UserModel } from "@src/type/type";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema<UserDocument>(
   {
     name: {
       type: String,
@@ -124,4 +124,9 @@ userSchema.pre("remove", async function (next) {
   next();
 });
 
-export const User: Model<UserModel> = mongoose.model("User", userSchema);
+export const User: Model<UserDocument, UserModel> = mongoose.model(
+  "User",
+  userSchema
+);
+
+export { userSchema };

@@ -3,10 +3,7 @@ import multer from "multer";
 import sharp from "sharp";
 import { User } from "../models/user";
 import { auth } from "../middleware/auth";
-const {
-  sendWelcomeEmail,
-  sendCancellationEmail,
-} = require("../emails/account");
+import { sendWelcomeEmail, sendCancellationEmail } from "../emails/account";
 const router = express.Router();
 
 router.post("/users", async (req: Request, res: Response) => {
@@ -37,12 +34,14 @@ router.post("/users/login", async (req: Request, res: Response) => {
 
 router.post("/users/logout", auth, async (req: Request, res: Response) => {
   try {
-    req.user.tokens = req.user.tokens.filter((token) => {
-      return token.token !== req.token;
-    });
-    await req.user.save();
+    if (req.user.tokens) {
+      req.user.tokens = req.user.tokens.filter((token) => {
+        return token.token !== req.token;
+      });
+      await req.user.save();
 
-    res.send();
+      res.send();
+    }
   } catch (error) {
     res.status(500).send();
   }
