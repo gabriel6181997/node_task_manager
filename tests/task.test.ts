@@ -1,16 +1,12 @@
-const request = require("supertest");
-const app = require("../src/app");
-const Task = require("../src/models/task");
-const {
-  userOneId,
+import request from "supertest";
+import { app } from "../src/app";
+import { Task } from "../src/models/task";
+import {
   userOne,
-  userTwoId,
   userTwo,
   taskOne,
-  taskTwo,
-  taskThree,
   setUpDatabase,
-} = require("./fixtures/db");
+} from "./fixtures/db";
 
 beforeEach(setUpDatabase);
 
